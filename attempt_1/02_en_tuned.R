@@ -11,7 +11,7 @@ registerDoMC(cores = 4)
 
 tidymodels_prefer ()
 
-load("data/setup5.rda")
+load("attempt_1/setups/setup1.rda")
 
 ##### DEFINE ENGINES/WORKFLOWS #########################################
 en_model <- linear_reg(mode = "regression",
