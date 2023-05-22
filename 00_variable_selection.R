@@ -97,3 +97,6 @@ save(rf_vip, file = "data/rf_vip.rda")
 
 rf_vip
 
+# x242, x382, x461,x526, x278, x249, x516, x549, x299, x041
+lasso_vars <- lasso_tidy %>% 
+  pull(term)
