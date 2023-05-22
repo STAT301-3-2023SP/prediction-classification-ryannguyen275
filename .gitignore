@@ -26,3 +26,9 @@
 
 # R Environment Variables
 .Renviron
+git rm --cached
+
+# Attempt 1
+
+attempt_1/results/bt_tuned.rda
+attempt_1/setups/setup1.rda
