@@ -1,4 +1,3 @@
-# Elastic Net Tuning
 
 ##### LOAD PACKAGES/DATA ##############################################
 
@@ -9,33 +8,34 @@ library(tictoc)
 library(doMC)
 registerDoMC(cores = 4)
 
-tidymodels_prefer ()
+tidymodels_prefer()
 
 load("attempt_1/setups/setup1.rda")
 
 ##### DEFINE ENGINES/WORKFLOWS #########################################
-en_model <- logistic_reg(mode = "classification",
-                       penalty = tune(), 
-                       mixture = tune()) %>% 
-  set_engine("glmnet")
+rf_model <- rand_forest(min_n = tune(),
+                        mtry = tune()) %>% 
+  set_engine("ranger", importance = "impurity") %>% 
+  set_mode("classification")
 
-en_param <- extract_parameter_set_dials(en_model)
+rf_param <- extract_parameter_set_dials(rf_model) %>% 
+  recipes::update(mtry = mtry(range = c(1,10)))
 
-en_grid <- grid_regular(en_param, levels = 5)
+rf_grid <- grid_regular(rf_param, levels = 5)
 
-en_workflow <- workflow() %>% 
-  add_model(en_model) %>% 
+rf_workflow <- workflow() %>% 
+  add_model(rf_model) %>% 
   add_recipe(recipe1)
 
 ##### TUNE GRID ########################################################
-
-en_tuned <- tune_grid(en_workflow,
+rf_tuned <- tune_grid(rf_workflow,
                       resamples = folds,
-                      grid = en_grid,
+                      grid = rf_grid,
                       verbose = TRUE,
                       control = control_grid(save_pred = TRUE, 
                                              save_workflow = TRUE,
                                              verbose = TRUE,
                                              parallel_over = "everything"))
 
-save(en_tuned, en_workflow, file = "attempt_1/results/en_tuned.rda")
+
+save(rf_tuned, rf_workflow, file = "attempt_1/results/rf_tuned.rda")
