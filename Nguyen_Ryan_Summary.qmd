@@ -1,27 +1,23 @@
 ---
-title: "Executive Summary"
+title: "Classification Prediciton Executive Summary"
 author: "Ryan Nguyen"
-format: html
-editor: visual
+
+format:
+  html:
+    toc: true
+    embed-resources: true
+    echo: false
+    link-external-newwindow: true
+    
+execute:
+  warning: false
+
+from: markdown+emoji  
 ---
 
-## Quarto
+To begin the prediction problem, the data was read in and explored. The data was split into a training data set and test data set with a 0.75 proportion, stratified on our outcome variable y, in order to prevent overfitting. From here, the data was explored to see the missingness of all variables, the distribution of the outcome variable, variables with zero variance, and miscoded categorical variables, to look for potential transformations. 
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+After exploring the data, the next step was variable selection. Since there were over 750 variables, it was important to find which variables were impactful in predicting the outcome variable. An initial recipe was created and tuned with a lasso model and a random forest model to do so. In the lasso model, variables with a coefficient of 0 were filtered out, since this means they are not impacting our model significantly. Ultimately, the lasso model resulted in 146 variables. 
 
-## Running Code
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
 
-```{r}
-1 + 1
-```
-
-You can add options to executable code like this
-
-```{r}
-#| echo: false
-2 * 2
-```
-
-The `echo: false` option disables the printing of code (only output is displayed).
