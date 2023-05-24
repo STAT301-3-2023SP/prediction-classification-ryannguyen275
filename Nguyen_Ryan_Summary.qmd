@@ -15,6 +15,8 @@ execute:
 from: markdown+emoji  
 ---
 
+# Predicting Y (Classification)
+
 **GitHub Repo:** <https://github.com/STAT301-3-2023SP/prediction-classification-ryannguyen275>
 
 The goal of this problem is to best predict and classify the variable `y`. To begin the prediction problem, the data was read in and explored. The data was split into a training data set and test data set with a 0.75 proportion, stratified on our outcome variable y, in order to prevent overfitting. From here, the data was explored to see the missingness of all variables, the distribution of the outcome variable, variables with zero variance, and miscoded categorical variables, to look for potential transformations. Since it is a classification problem, the outcome variable `y` was mutated into a factor. The metric will be roc_auc, or the area under the receiving operator curve.
@@ -42,14 +44,13 @@ model_results %>%
 ggplot(model_results, aes (x = wflow_id, y = mean, color = wflow_id)) +
   geom_point() +
   labs( y = "Roc_auc", x = "Model") +
+  geom_errorbar(aes(ymin = mean - std_err, ymax = mean + std_err), width = 0.3) +
   geom_text(aes(y = mean - 0.01, label = wflow_id, color = wflow_id), angle = 90, hjust = 1) +
   ggtitle(label = "Best Results") +
   ylim(c(0.52, 0.65)) + 
   theme(legend.position = "none")
 ```
 
-Based on the results above, we can see that best model was the neural networks model resulted in a roc_auc of 0.632. The neural networks workflow was finalized and fit on the entire training set; this fit was used to predict our final testing set. The predictions were then written as a .csv file and submitted, resulting in an roc_auc of 0.59517. This process was repeated with the second best model, elastic net, with an roc_auc of 0.630, and the .csv submission resulted in an roc_auc of 0.57474. Finally, the process was repeated with our third best model, svm poly, with an roc_auc of 0.629, which resulted in an roc_auc submission of 0.57578, which is better than our second model. Overall, the neural networks model was the best, and the only one to beat the benchmark of 0.583. 
+Based on the results above, we can see that best model was the neural networks model resulted in a roc_auc of 0.632. The neural networks workflow was finalized and fit on the entire training set; this fit was used to predict our final testing set. The predictions were then written as a .csv file and submitted, resulting in an roc_auc of 0.59517. This process was repeated with the second best model, elastic net, with an roc_auc of 0.630, and the .csv submission resulted in an roc_auc of 0.57474. Finally, the process was repeated with our third best model, svm poly, with an roc_auc of 0.629, which resulted in an roc_auc submission of 0.57578, which is better than our second model. Overall, the neural networks model was the best, and the only one to beat the benchmark of 0.583.
 
 Finally, this problem used a variety of feature engineering and machine learning to predict y. While the roc_auc met the benchmark, it could be improved. In the future, to improve this prediction model, the tuning parameters could be adjusted to better the models, the recipe could be changed (varying imputation methods, adding transformations, adding interactions, etc.), or the models could be stacked in an ensemble model. All of these could help us achieve a greater roc_auc and improve our prediction of y.
-
-
