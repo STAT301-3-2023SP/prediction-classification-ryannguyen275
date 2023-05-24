@@ -15,9 +15,36 @@ execute:
 from: markdown+emoji  
 ---
 
-To begin the prediction problem, the data was read in and explored. The data was split into a training data set and test data set with a 0.75 proportion, stratified on our outcome variable y, in order to prevent overfitting. From here, the data was explored to see the missingness of all variables, the distribution of the outcome variable, variables with zero variance, and miscoded categorical variables, to look for potential transformations. 
+**GitHub Repo:** <https://github.com/STAT301-3-2023SP/prediction-classification-ryannguyen275>
 
-After exploring the data, the next step was variable selection. Since there were over 750 variables, it was important to find which variables were impactful in predicting the outcome variable. An initial recipe was created and tuned with a lasso model and a random forest model to do so. In the lasso model, variables with a coefficient of 0 were filtered out, since this means they are not impacting our model significantly. Ultimately, the lasso model resulted in 146 variables. 
+The goal of this problem is to best predict and classify the variable `y`. To begin the prediction problem, the data was read in and explored. The data was split into a training data set and test data set with a 0.75 proportion, stratified on our outcome variable y, in order to prevent overfitting. From here, the data was explored to see the missingness of all variables, the distribution of the outcome variable, variables with zero variance, and miscoded categorical variables, to look for potential transformations. Since it is a classification problem, the outcome variable `y` was mutated into a factor. The metric will be roc_auc, or the area under the receiving operator curve.
+
+After exploring the data, the next step was variable selection. Since there were over 750 variables, it was important to find which variables were impactful in predicting the outcome variable. An initial recipe was created and tuned with a lasso model and a random forest model to do so. In the lasso model, variables with a coefficient of 0 were filtered out, since this means they are not impacting our model significantly. Ultimately, the lasso model resulted in 146 variables. From here, only these variables were selected in the training data to begin feature engineering.
+
+The training data was folded using v-fold cross-validation, with 5 folds and 3 repeats, to help prevent overfitting. The recipe on the new training set included `step_nzv()` to remove zero variance variables, `step_normalize()` to center and normalize all variables, and `step_impute_mean()` to impute missing variables with the mean. The recipe was prep and baked to ensure there were no computational errors.
+
+8 models were defined with their respectives engines, workflows, and tuning grids. These models include a boosted tree model, an elastic net model, a k-nearest neighbors model, a MARS model, a neural network model, a random forest model, a SVM polynomial model, and an SVM radial model. They were each tuned with their respective parameters, using the saved folds and first recipe, and the workflows and tuning results were saved.
+
+The model with the greatest roc_auc was selected from each model, and the results were compared in the table below.
+
+```{r}
+library(tidyverse)
+library(tidymodels)
+library(kableExtra)
+load("attempt_1/results/model_results.rda")
+model_results %>% 
+  select(wflow_id, mean, std_err) %>% 
+  rename(model = wflow_id,
+         roc_auc = mean) %>% 
+  kbl()  %>%
+  kable_styling()
+```
+
+Based on the results above, we can see that best model was the neural networks model resulted in a roc_auc of 0.632. The neural networks workflow was finalized and fit on the entire training set; this fit was used to predict our final testing set. The predictions were then written as a .csv file and submitted, resulting in an roc_auc of 0.59517. This process was repeated with the second best model, elastic net, with an roc_auc of 0.630, and the .csv submission resulted in an roc_auc of 0.57474. Finally, the process was repeated with our third best model, svm poly, with an roc_auc of 0.629, which resulted in an roc_auc submission of 0.57578, which is better than our second model. Overall, the neural networks model was the best, and the only one to beat the benchmark of 0.583. 
+
+In the future, to improve this prediction model, the tuning parameters could be adjusted to better the models, the recipe could be changed (varying imputation methods, adding transformations, adding interactions, etc.), or the models could be stacked in an ensemble model. 
+
+
 
 
 

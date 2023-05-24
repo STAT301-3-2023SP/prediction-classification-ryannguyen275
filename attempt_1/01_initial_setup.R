@@ -17,6 +17,10 @@ set.seed(3013)
 load("data/train.rda")
 load("data/lasso_variables.rda")
 
+train <- initial_split(train, prop = 0.75, strata = y)
+train <- training(train)
+test <- testing(train)
+
 folds <- vfold_cv(train, v = 5, repeats = 3, strata = y)
 
 ########## set up recipes #####################################################
