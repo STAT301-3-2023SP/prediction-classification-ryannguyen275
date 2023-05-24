@@ -61,6 +61,8 @@ View(lasso_tidy)
 
 save(lasso_tidy, file = "data/lasso_variables.rda")
 
+load("data/lasso_variables.rda")
+
 ############## variable selection using random forest #############################]
 
 rf_mod <- rand_forest(mode = "classification",
