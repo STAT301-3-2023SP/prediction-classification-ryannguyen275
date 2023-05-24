@@ -32,3 +32,17 @@ git rm --cached
 
 attempt_1/results/bt_tuned.rda
 attempt_1/setups/setup1.rda
+
+attempt_1/results/en_tuned.rda
+attempt_1/results/knn_tuned.rda
+attempt_1/results/mars_tuned.rda
+attempt_1/results/nn_tuned.rda
+attempt_1/results/rf_tuned.rda
+attempt_1/results/svm_poly_tuned.rda
+attempt_1/results/svm_radial_tuned.rda
+
+attempt_1/results/model_results.rda
+
+
+
+
